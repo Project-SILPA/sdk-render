@@ -5,7 +5,7 @@ USE_FREETYPE := 2.4.2
 endif
 
 ifeq ($(USE_FREETYPE),2.4.2)
-LOCAL_PATH:= $(call my-dir)
+LOCAL_PATH:= $(call my-dir)   
 include $(CLEAR_VARS)
 
 # compile in ARM mode, since the glyph loader/renderer is a hotspot
@@ -39,6 +39,7 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/builds \
 	$(LOCAL_PATH)/include \
 	external/libpng \
+	$(LOCAL_PATH)/../libpng \
 	external/zlib
 
 LOCAL_CFLAGS += -W -Wall
@@ -46,7 +47,7 @@ LOCAL_CFLAGS += -fPIC -DPIC
 LOCAL_CFLAGS += "-DDARWIN_NO_CARBON"
 LOCAL_CFLAGS += "-DFT2_BUILD_LIBRARY"
 
-LOCAL_SHARED_LIBRARIES += libpng libz
+LOCAL_SHARED_LIBRARIES += libz
 
 # the following is for testing only, and should not be used in final builds
 # of the product
@@ -56,5 +57,5 @@ LOCAL_CFLAGS += -O2
 
 LOCAL_MODULE:= libft2
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)
 endif

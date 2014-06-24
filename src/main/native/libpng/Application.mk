@@ -1,2 +1,2 @@
 APP_OPTIM := release
-APP_MODULES := libpng
+APP_MODULES := libpng_android

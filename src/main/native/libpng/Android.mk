@@ -3,7 +3,7 @@ include $(CLEAR_VARS)
 
 LOCAL_CFLAGS := 
 
-LOCAL_MODULE    := libpng
+LOCAL_MODULE    := libpng_android
 LOCAL_SRC_FILES :=\
 	png.c \
 	pngerror.c \
@@ -23,5 +23,5 @@ LOCAL_SRC_FILES :=\
 	
 LOCAL_LDLIBS := -lz
 
-#include $(BUILD_SHARED_LIBRARY)
-include $(BUILD_STATIC_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
+#include $(BUILD_STATIC_LIBRARY)
