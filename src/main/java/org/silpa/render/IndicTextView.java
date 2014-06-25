@@ -9,7 +9,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import org.silpa.sdk.common.LanguageDetect;
 
@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by sujith on 24/6/14.
+ * Created by sujith on 25/6/14.
  */
-public class IndicEditText extends EditText {
+public class IndicTextView extends TextView {
 
     static {
         System.loadLibrary("png_android");
@@ -51,12 +51,11 @@ public class IndicEditText extends EditText {
         languageCodes.put("kn_IN", 3);
         languageCodes.put("ml_IN", 4);
         languageCodes.put("or_IN", 5);
-        languageCodes.put("pa_IN", 6);
-        languageCodes.put("ta_IN", 7);
-        languageCodes.put("te_IN", 8);
+        languageCodes.put("ta_IN", 6);
+        languageCodes.put("te_IN", 7);
     }
 
-    private static final int NUM_SUPPORTED_INDIC_LANGUAGES = 9;
+    private static final int NUM_SUPPORTED_INDIC_LANGUAGES = 8;
     private static final String LOG_TAG = "IndicEditText";
 
     /**
@@ -64,7 +63,7 @@ public class IndicEditText extends EditText {
      *
      * @param context context of application
      */
-    public IndicEditText(Context context) {
+    public IndicTextView(Context context) {
         super(context);
         init(null, 0);
     }
@@ -75,7 +74,7 @@ public class IndicEditText extends EditText {
      * @param context context of application
      * @param attrs   attribute set
      */
-    public IndicEditText(Context context, AttributeSet attrs) {
+    public IndicTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
@@ -87,7 +86,7 @@ public class IndicEditText extends EditText {
      * @param attrs    attribute set
      * @param defStyle default style
      */
-    public IndicEditText(Context context, AttributeSet attrs, int defStyle) {
+    public IndicTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
@@ -115,12 +114,12 @@ public class IndicEditText extends EditText {
         this.fontPaths[3] = this.mContext.getFilesDir() + File.separator + "lohit_kn.ttf";
         this.fontPaths[4] = this.mContext.getFilesDir() + File.separator + "lohit_ml.ttf";
         this.fontPaths[5] = this.mContext.getFilesDir() + File.separator + "lohit_or.ttf";
-        this.fontPaths[6] = this.mContext.getFilesDir() + File.separator + "lohit_pa.ttf";
-        this.fontPaths[7] = this.mContext.getFilesDir() + File.separator + "lohit_ta.ttf";
-        this.fontPaths[8] = this.mContext.getFilesDir() + File.separator + "lohit_te.ttf";
+        this.fontPaths[6] = this.mContext.getFilesDir() + File.separator + "lohit_ta.ttf";
+        this.fontPaths[7] = this.mContext.getFilesDir() + File.separator + "lohit_te.ttf";
     }
 
     public void drawGlyph(int glyphBitmap[][], int x, int y) {
+
         if (glyphBitmap == null) {
             return;
         }
@@ -156,10 +155,6 @@ public class IndicEditText extends EditText {
         int count = getLineCount();
         String[] textLines = getText().toString().split("\\n");
 
-        if (textLines == null || textLines.length == 0) {
-            super.onDraw(canvas);
-            return;
-        }
         String word = (textLines[0].split(" "))[0];
         String lang = LanguageDetect.detectLanguage(word.split(" ")[0]).get(word.split(" ")[0]);
 

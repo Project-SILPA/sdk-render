@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -6,7 +5,7 @@
 #include <android/log.h>
 #include <hb-ft.h>
 
-#define NUM_SUPPORTED_INDIC_LANGUAGES 8
+#define NUM_SUPPORTED_INDIC_LANGUAGES 9
 
 const hb_script_t scripts[NUM_SUPPORTED_INDIC_LANGUAGES] = {
     HB_SCRIPT_BENGALI,
@@ -15,6 +14,7 @@ const hb_script_t scripts[NUM_SUPPORTED_INDIC_LANGUAGES] = {
     HB_SCRIPT_KANNADA,
     HB_SCRIPT_MALAYALAM,
     HB_SCRIPT_ORIYA,
+    HB_SCRIPT_GURMUKHI,
     HB_SCRIPT_TAMIL,
     HB_SCRIPT_TELUGU,
 };
@@ -72,8 +72,8 @@ void draw_bitmap(FT_Bitmap* bitmap, jint xStart, jint yStart, JNIEnv *env,
 	return;
 }
 
-void Java_org_silpa_render_IndicEditText_drawIndicText(
-		JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
+
+void drawIndicText(JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
 		jint yBaseLine, jint charHeight, jobject lock, jstring fontPath, jint language) {
 	FT_Library ft_library;
 	FT_Face ft_face;
@@ -181,4 +181,19 @@ void Java_org_silpa_render_IndicEditText_drawIndicText(
 	FT_Done_FreeType(ft_library);
 
 	return;
+}
+
+
+void Java_org_silpa_render_IndicEditText_drawIndicText(
+		JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
+		jint yBaseLine, jint charHeight, jobject lock, jstring fontPath, jint language) {
+
+		drawIndicText(env, thiz, unicodeText, xStart, yBaseLine, charHeight, lock, fontPath, language);
+}
+
+void Java_org_silpa_render_IndicTextView_drawIndicText(
+		JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
+		jint yBaseLine, jint charHeight, jobject lock, jstring fontPath, jint language) {
+
+		drawIndicText(env, thiz, unicodeText, xStart, yBaseLine, charHeight, lock, fontPath, language);
 }
