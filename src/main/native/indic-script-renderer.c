@@ -50,8 +50,8 @@ void draw_bitmap(FT_Bitmap* bitmap, jint xStart, jint yStart, JNIEnv *env,
 	cls = (*env)->GetObjectClass(env, jobj);
 	mid = (*env)->GetMethodID(env, cls, "drawGlyph", "([[III)V");
 	if (mid == 0) {
-		__android_log_print(2, "drawIndicText:draw_bitmap", "%s",
-				"Can't find method drawGlyph");
+//		__android_log_print(2, "drawIndicText:draw_bitmap", "%s",
+//				"Can't find method drawGlyph");
 		return;
 	}
 
@@ -105,16 +105,16 @@ void Java_org_silpa_render_IndicEditText_drawIndicText(
 
 	error = FT_Init_FreeType(&ft_library); /* initialize library */
 	if (error) {
-		__android_log_print(6, "drawIndicText",
-				"Error initializing FreeType library\n");
+//		__android_log_print(6, "drawIndicText",
+//				"Error initializing FreeType library\n");
 		return;
 	}
-	__android_log_print(2, "drawIndicText",
-			"Successfully initialized FreeType library\n");
+//	__android_log_print(2, "drawIndicText",
+//			"Successfully initialized FreeType library\n");
 
 	error = FT_New_Face(ft_library, fontFilePath, 0, &ft_face); /* create face object */
 	if (error == FT_Err_Unknown_File_Format) {
-		__android_log_print(6, "drawIndicText",
+    	__android_log_print(6, "drawIndicText",
 				"The font file could be opened and read, but it appears that its font format is unsupported %s ", fontFilePath);
 		return;
 	} else if (error) {
@@ -122,8 +122,8 @@ void Java_org_silpa_render_IndicEditText_drawIndicText(
 				"The font file could not be opened or read, or it might be broken");
 		return;
 	}
-	__android_log_print(2, "drawIndicText",
-			"Successfully created font-face object\n");
+//	__android_log_print(2, "drawIndicText",
+//			"Successfully created font-face object\n");
 
 	font = hb_ft_font_create(ft_face, NULL);
 
@@ -151,7 +151,9 @@ void Java_org_silpa_render_IndicEditText_drawIndicText(
 
 	for (i = 0; i < glyph_count; i++) {
 		glyph_index = glyph_info[i].codepoint;
-		__android_log_print(2, "drawIndicText", "Glyph%d = %x", i, glyph_index);
+
+		//__android_log_print(2, "drawIndicText", "Glyph%d = %x", i, glyph_index);
+
 		error = FT_Load_Glyph(ft_face, glyph_index, FT_LOAD_DEFAULT);
 		if (error) {
 			continue; /* ignore errors */
