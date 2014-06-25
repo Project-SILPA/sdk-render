@@ -32,8 +32,7 @@ HARFBUZZ_SRC_FILES = \
 	src/hb-shape-plan.cc \
 	src/hb-shaper.cc \
 	src/hb-unicode.cc \
-	src/hb-tt-font.cc \
-	src/ucdn.c \
+	src/hb-ucdn/ucdn.c \
 	src/hb-ucdn.cc \
 	src/hb-warning.cc \
 	src/hb-ot-layout.cc \
@@ -62,7 +61,6 @@ LOCAL_SRC_FILES:= \
 
 LOCAL_CPP_EXTENSION     := .cc
 LOCAL_STATIC_LIBRARIES  := libft2
-#LOCAL_STATIC_LIBRARIES := ft2
 LOCAL_SHARED_LIBRARIES += libpng_android
 LOCAL_C_INCLUDES        := \
   $(LOCAL_PATH)/src $(LOCAL_PATH)/src/hb-ucdn $(LOCAL_PATH)/../libpng $(LOCAL_PATH)/../freetype/include

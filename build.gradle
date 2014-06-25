@@ -30,6 +30,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':sdk-common')
 }
 
 task ndkBuild(type: Exec) {
@@ -42,7 +43,7 @@ task ndkBuild(type: Exec) {
 }
 
 task nativeLibsToJar(type: Zip, description: 'create a jar with native libs') {
-    destinationDir file("$buildDir/native-libs")
+    destinationDir file("$projectDir/libs")
     baseName 'native-libs'
     extension 'jar'
     from fileTree(dir: "$buildDir/native/libs", include: '**/*.so')
