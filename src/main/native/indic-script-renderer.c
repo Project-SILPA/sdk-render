@@ -183,15 +183,7 @@ void drawIndicText(JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
 	return;
 }
 
-
-void Java_org_silpa_render_IndicEditText_drawIndicText(
-		JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
-		jint yBaseLine, jint charHeight, jobject lock, jstring fontPath, jint language) {
-
-		drawIndicText(env, thiz, unicodeText, xStart, yBaseLine, charHeight, lock, fontPath, language);
-}
-
-void Java_org_silpa_render_IndicTextView_drawIndicText(
+void Java_org_silpa_render_ScriptRenderer_drawIndicText(
 		JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
 		jint yBaseLine, jint charHeight, jobject lock, jstring fontPath, jint language) {
 
