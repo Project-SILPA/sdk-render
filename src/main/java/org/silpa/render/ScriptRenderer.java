@@ -5,10 +5,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 
 import org.silpa.sdk.common.LanguageDetect;
 
@@ -32,13 +29,14 @@ public class ScriptRenderer {
 
     /**
      * This is native method defined in indic-script-renderer.c
+     *
      * @param unicodeText text to be render
-     * @param xStart start x
-     * @param yBaseLine baseline y
-     * @param charHeight font size
-     * @param lock lock
-     * @param fontPath path to font file
-     * @param language language of given text
+     * @param xStart      start x
+     * @param yBaseLine   baseline y
+     * @param charHeight  font size
+     * @param lock        lock
+     * @param fontPath    path to font file
+     * @param language    language of given text
      */
     public native void drawIndicText(String unicodeText, int xStart,
                                      int yBaseLine, int charHeight, Boolean lock, String fontPath,
@@ -58,11 +56,6 @@ public class ScriptRenderer {
      * Font color
      */
     private int fontColor;
-
-    /**
-     * Background color
-     */
-    private int backgroundFontColor;
 
     /**
      * Paths to font data
@@ -88,7 +81,7 @@ public class ScriptRenderer {
 
     /**
      * Initialize langauge codes
-      */
+     */
     static {
         languageCodes.put("bn_IN", 0);
         languageCodes.put("hi_IN", 1);
@@ -104,11 +97,11 @@ public class ScriptRenderer {
 
     /**
      * Constructor
+     *
      * @param context context
      */
     public ScriptRenderer(Context context) {
         this.mContext = context;
-        this.backgroundFontColor = Color.TRANSPARENT;
         initFontPaths();
         copyFontFiles();
     }
@@ -131,18 +124,36 @@ public class ScriptRenderer {
 
     /**
      * Set canvas for rendering
+     *
      * @param canvas
      */
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
     }
 
+    public Bitmap getRenderedBitmap(String text, int fontSize, int fontColor, int bitmapHeight,
+                                    int bitmapWidth) {
+        Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        this.canvas = new Canvas(bitmap);
+        renderIndicText(text, 0, fontSize, fontSize, fontColor);
+
+        for (int i = 0; i < bitmap.getHeight(); i++) {
+            for (int j = 0; j < bitmap.getWidth(); j++) {
+                if (bitmap.getPixel(j, i) == 0) {
+                    bitmap.setPixel(j, i, Color.WHITE);
+                }
+            }
+        }
+        return bitmap;
+    }
+
     /**
      * Render text
-     * @param text text to be render
-     * @param xStart start x position
+     *
+     * @param text      text to be render
+     * @param xStart    start x position
      * @param yBaseLine baseline y position
-     * @param fontSize font size
+     * @param fontSize  font size
      * @param fontColor font color
      */
     protected void renderIndicText(String text, int xStart, int yBaseLine, int fontSize, int fontColor) {
@@ -159,11 +170,12 @@ public class ScriptRenderer {
 
     /**
      * Called from native method
+     *
      * @param glyphBitmap glyph bitmap
-     * @param x bitmap position x
-     * @param y bitmap position y
+     * @param x           bitmap position x
+     * @param y           bitmap position y
      */
-    public void drawGlyph(int glyphBitmap[][], int x, int y) {
+    protected void drawGlyph(int glyphBitmap[][], int x, int y) {
         if (glyphBitmap == null) {
             return;
         }
@@ -177,7 +189,7 @@ public class ScriptRenderer {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (glyphBitmap[i][j] == 0) {
-                    tempBitmap.setPixel(j, i, backgroundFontColor);
+                    tempBitmap.setPixel(j, i, Color.TRANSPARENT);
                 } else {
                     float bitmapFactor = ((float) (glyphBitmap[i][j] & 0xFF)) / 255.0f;
                     tempBitmap.setPixel(j, i, Color.parseColor("#" +
@@ -224,6 +236,7 @@ public class ScriptRenderer {
                 out.flush();
                 out.close();
                 out = null;
+                System.out.println("Loaded font files");
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Failed to copy asset font file: " + filename, e);
             }
