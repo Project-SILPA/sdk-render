@@ -83,10 +83,10 @@ public class IndicEditText extends EditText {
             super.onDraw(canvas);
             return;
         }
-        String word = (textLines[0].split(" "))[0];
+        String word = (textLines[0].trim().split(" "))[0];
         String lang = LanguageDetect.detectLanguage(word.split(" ")[0]).get(word.split(" ")[0]);
 
-        if (lang == null || lang.equals("en_US")) {
+        if (lang == null) {
             super.onDraw(canvas);
             return;
         }

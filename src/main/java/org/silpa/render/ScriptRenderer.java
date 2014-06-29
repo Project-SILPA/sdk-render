@@ -7,15 +7,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 
-import org.silpa.sdk.common.LanguageDetect;
+import org.silpa.sdk.common.CharacterMap;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * Created by sujith on 27/6/14.
@@ -52,6 +55,8 @@ public class ScriptRenderer {
      */
     private Canvas canvas;
 
+    private int xStart, yStart;
+
     /**
      * Font color
      */
@@ -74,7 +79,7 @@ public class ScriptRenderer {
      * add to fontPaths,
      * add harfbuzz script in indic-script-renderer
      */
-    private static final int NUM_SUPPORTED_INDIC_LANGUAGES = 9;
+    private static final int NUM_SUPPORTED_INDIC_LANGUAGES = 10;
 
     // LOG TAG
     private static final String LOG_TAG = "Script Renderer";
@@ -84,14 +89,15 @@ public class ScriptRenderer {
      */
     static {
         languageCodes.put("bn_IN", 0);
-        languageCodes.put("hi_IN", 1);
-        languageCodes.put("gu_IN", 2);
-        languageCodes.put("kn_IN", 3);
-        languageCodes.put("ml_IN", 4);
-        languageCodes.put("or_IN", 5);
-        languageCodes.put("pa_IN", 6);
-        languageCodes.put("ta_IN", 7);
-        languageCodes.put("te_IN", 8);
+        languageCodes.put("en_US", 1);
+        languageCodes.put("hi_IN", 2);
+        languageCodes.put("gu_IN", 3);
+        languageCodes.put("kn_IN", 4);
+        languageCodes.put("ml_IN", 5);
+        languageCodes.put("or_IN", 6);
+        languageCodes.put("pa_IN", 7);
+        languageCodes.put("ta_IN", 8);
+        languageCodes.put("te_IN", 9);
     }
 
 
@@ -112,14 +118,15 @@ public class ScriptRenderer {
     private void initFontPaths() {
         this.fontPaths = new String[NUM_SUPPORTED_INDIC_LANGUAGES];
         this.fontPaths[0] = this.mContext.getFilesDir() + File.separator + "lohit_bn.ttf";
-        this.fontPaths[1] = this.mContext.getFilesDir() + File.separator + "lohit_hi.ttf";
-        this.fontPaths[2] = this.mContext.getFilesDir() + File.separator + "lohit_gu.ttf";
-        this.fontPaths[3] = this.mContext.getFilesDir() + File.separator + "lohit_kn.ttf";
-        this.fontPaths[4] = this.mContext.getFilesDir() + File.separator + "lohit_ml.ttf";
-        this.fontPaths[5] = this.mContext.getFilesDir() + File.separator + "lohit_or.ttf";
-        this.fontPaths[6] = this.mContext.getFilesDir() + File.separator + "lohit_pa.ttf";
-        this.fontPaths[7] = this.mContext.getFilesDir() + File.separator + "lohit_ta.ttf";
-        this.fontPaths[8] = this.mContext.getFilesDir() + File.separator + "lohit_te.ttf";
+        this.fontPaths[1] = this.mContext.getFilesDir() + File.separator + "Roboto-Regular.ttf";
+        this.fontPaths[2] = this.mContext.getFilesDir() + File.separator + "lohit_hi.ttf";
+        this.fontPaths[3] = this.mContext.getFilesDir() + File.separator + "lohit_gu.ttf";
+        this.fontPaths[4] = this.mContext.getFilesDir() + File.separator + "lohit_kn.ttf";
+        this.fontPaths[5] = this.mContext.getFilesDir() + File.separator + "lohit_ml.ttf";
+        this.fontPaths[6] = this.mContext.getFilesDir() + File.separator + "lohit_or.ttf";
+        this.fontPaths[7] = this.mContext.getFilesDir() + File.separator + "lohit_pa.ttf";
+        this.fontPaths[8] = this.mContext.getFilesDir() + File.separator + "lohit_ta.ttf";
+        this.fontPaths[9] = this.mContext.getFilesDir() + File.separator + "lohit_te.ttf";
     }
 
     /**
@@ -158,14 +165,45 @@ public class ScriptRenderer {
      */
     protected void renderIndicText(String text, int xStart, int yBaseLine, int fontSize, int fontColor) {
         this.fontColor = fontColor;
+        this.xStart = xStart;
+        this.yStart = yBaseLine;
         try {
-            String word = (text.split(" "))[0];
-            String lang = LanguageDetect.detectLanguage(word.split(" ")[0]).get(word.split(" ")[0]);
-            int language = languageCodes.get(lang);
-            drawIndicText(text, xStart, yBaseLine, fontSize, true, fontPaths[language], language);
+            List<String[]> lst = preprocessString(text);
+            for (int i = lst.size() - 1; i >= 0; i--) {
+                String[] arr = lst.get(i);
+                int language = languageCodes.get(arr[1]);
+                drawIndicText(arr[0], this.xStart, this.yStart, fontSize,
+                        true, fontPaths[language], language);
+            }
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error : " + e.getMessage());
         }
+    }
+
+    private List<String[]> preprocessString(String text) {
+        List<String[]> lst = new ArrayList<String[]>();
+
+        char[] characters = text.toCharArray();
+        int len = characters.length;
+        String str = "" + characters[len - 1];
+        String strLang = CharacterMap.getLanguage(characters[len - 1]);
+        if (strLang == null) {
+            strLang = "en_US";
+        }
+
+        for (int i = len - 2; i >= 0; i--) {
+            String lang = CharacterMap.getLanguage(characters[i]);
+            if (lang == null || lang.equals(strLang)) {
+                str = characters[i] + str;
+            } else {
+                lst.add(new String[]{str, strLang});
+                str = "" + characters[i];
+                strLang = lang;
+            }
+        }
+        lst.add(new String[]{str, strLang});
+
+        return lst;
     }
 
     /**
@@ -198,6 +236,7 @@ public class ScriptRenderer {
             }
         }
         this.canvas.drawBitmap(tempBitmap, x, y, null);
+        this.xStart = x + width;
     }
 
     /**

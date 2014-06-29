@@ -5,10 +5,11 @@
 #include <android/log.h>
 #include <hb-ft.h>
 
-#define NUM_SUPPORTED_INDIC_LANGUAGES 9
+#define NUM_SUPPORTED_INDIC_LANGUAGES 10
 
 const hb_script_t scripts[NUM_SUPPORTED_INDIC_LANGUAGES] = {
     HB_SCRIPT_BENGALI,
+    HB_SCRIPT_COMMON,
     HB_SCRIPT_DEVANAGARI,
     HB_SCRIPT_GUJARATI,
     HB_SCRIPT_KANNADA,
