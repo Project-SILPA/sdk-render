@@ -20,9 +20,6 @@ before_install:
   # for common library
   - git clone https://github.com/SujithVadakkepat/sdk-common.git
 
-  # install android ndk and build harfbuzz
-  - ./build_script.sh
-
 install: gradle clean build
 
 script: gradle check
