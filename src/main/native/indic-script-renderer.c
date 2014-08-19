@@ -30,8 +30,9 @@ void draw_bitmap(FT_Bitmap* bitmap, jint xStart, jint yStart, JNIEnv *env,
 	jclass cls;
 	jmethodID mid;
 
-	// Create array to send back
-	//for table overflow error minimization
+	/* Create array to send back
+	 * for table overflow error minimization
+	 */
 	(*env)->PushLocalFrame(env, 256);
 	row = (jintArray)(*env)->NewIntArray(env, bitmap->width);
 	ret = (jobjectArray)(*env)->NewObjectArray(env, bitmap->rows,
@@ -51,8 +52,8 @@ void draw_bitmap(FT_Bitmap* bitmap, jint xStart, jint yStart, JNIEnv *env,
 	cls = (*env)->GetObjectClass(env, jobj);
 	mid = (*env)->GetMethodID(env, cls, "drawGlyph", "([[III)V");
 	if (mid == 0) {
-//		__android_log_print(2, "drawIndicText:draw_bitmap", "%s",
-//				"Can't find method drawGlyph");
+		//  __android_log_print(2, "drawIndicText:draw_bitmap", "%s",
+        // 	    "Can't find method drawGlyph");
 		return;
 	}
 
@@ -104,14 +105,15 @@ void drawIndicText(JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
 	text = (*env)->GetStringChars(env, unicodeText, &iscopy);
 	num_chars = (*env)->GetStringLength(env, unicodeText);
 
-	error = FT_Init_FreeType(&ft_library); /* initialize library */
+    /* initialize library */
+	error = FT_Init_FreeType(&ft_library);
 	if (error) {
-//		__android_log_print(6, "drawIndicText",
-//				"Error initializing FreeType library\n");
+        //  __android_log_print(6, "drawIndicText",
+        //	    "Error initializing FreeType library\n");
 		return;
 	}
-//	__android_log_print(2, "drawIndicText",
-//			"Successfully initialized FreeType library\n");
+    //  __android_log_print(2, "drawIndicText",
+    //	    "Successfully initialized FreeType library\n");
 
 	error = FT_New_Face(ft_library, fontFilePath, 0, &ft_face); /* create face object */
 	if (error == FT_Err_Unknown_File_Format) {
@@ -123,8 +125,8 @@ void drawIndicText(JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
 				"The font file could not be opened or read, or it might be broken");
 		return;
 	}
-//	__android_log_print(2, "drawIndicText",
-//			"Successfully created font-face object\n");
+    //  __android_log_print(2, "drawIndicText",
+    //	    "Successfully created font-face object\n");
 
 	font = hb_ft_font_create(ft_face, NULL);
 
@@ -138,13 +140,11 @@ void drawIndicText(JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
 
 	hb_buffer_set_script(buffer, scripts[language]);
 
-	//hb_buffer_set_language(buffer, hb_language_from_string("ka"));
-
 	/* Layout the text */
 	hb_buffer_add_utf16(buffer, text, num_chars, 0, num_chars);
-	//__android_log_print(2, "drawIndicText", "Before HarfBuzz shape()\n");
+	//  __android_log_print(2, "drawIndicText", "Before HarfBuzz shape()\n");
 	hb_shape(font, buffer, NULL, 0);
-	//__android_log_print(2, "drawIndicText", "After HarfBuzz shape()\n");
+	//  __android_log_print(2, "drawIndicText", "After HarfBuzz shape()\n");
 
 	glyph_count = hb_buffer_get_length(buffer);
 	glyph_info = hb_buffer_get_glyph_infos(buffer, 0);
@@ -153,12 +153,14 @@ void drawIndicText(JNIEnv* env, jobject thiz, jstring unicodeText, jint xStart,
 	for (i = 0; i < glyph_count; i++) {
 		glyph_index = glyph_info[i].codepoint;
 
-		//__android_log_print(2, "drawIndicText", "Glyph%d = %x", i, glyph_index);
+		//  __android_log_print(2, "drawIndicText", "Glyph%d = %x", i, glyph_index);
 
 		error = FT_Load_Glyph(ft_face, glyph_index, FT_LOAD_DEFAULT);
 		if (error) {
-			continue; /* ignore errors */
+		    /* ignore errors */
+			continue;
 		}
+
 		/* convert to an anti-aliased bitmap */
 		error = FT_Render_Glyph(ft_face->glyph, FT_RENDER_MODE_NORMAL);
 		if (error) {
