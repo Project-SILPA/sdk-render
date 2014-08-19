@@ -58,3 +58,7 @@ dependencies {
 //}
 //
 //nativeLibsToJar.dependsOn 'ndkBuild'
+
+// Uncomment following code while updating on maven central
+//
+// apply from: '../gradle-mvn-push.gradle'
