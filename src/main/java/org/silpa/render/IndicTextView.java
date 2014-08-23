@@ -1,26 +1,12 @@
 package org.silpa.render;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.os.Build;
-import android.os.Environment;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TextView;
 
 import org.silpa.sdk.common.LanguageDetect;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by sujith on 25/6/14.
@@ -109,9 +95,7 @@ public class IndicTextView extends TextView {
         for (int i = 0; i < count; i++) {
             int baseline = getLineBounds(i, r);
             String currentText = i < textLines.length ? textLines[i] : "";
-            if (currentText == null || currentText.length() == 0) {
-                return;
-            }
+            
             scriptRenderer.setCanvas(canvas);
             scriptRenderer.renderIndicText(currentText, r.left, baseline, (int) getTextSize(),
                     getCurrentTextColor());

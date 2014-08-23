@@ -95,9 +95,7 @@ public class IndicEditText extends EditText {
         for (int i = 0; i < count; i++) {
             int baseline = getLineBounds(i, r);
             String currentText = i < textLines.length ? textLines[i] : "";
-            if (currentText == null || currentText.length() == 0) {
-                return;
-            }
+
             scriptRenderer.setCanvas(canvas);
             scriptRenderer.renderIndicText(currentText, r.left, baseline, (int) getTextSize(),
                     getCurrentTextColor());
