@@ -10,7 +10,6 @@ branches:
   only:
     - master
     - android_develop
-    - org_dependency
 
 jdk: openjdk7
 
@@ -26,13 +25,13 @@ before_install:
   - sudo mv gradle-1.12 /usr/local/gradle
 
   # for common library
-  - git clone https://github.com/SujithVadakkepat/sdk-common.git
+  - git clone https://github.com/Project-SILPA/sdk-common.git
 
   # build android ndk
-  - sh install_android_ndk.sh
+  # - sh install_android_ndk.sh
 
   # build dependencies - harfbuzz, freetype, libpng
-  - sh build_dependencies_script.sh
+  # - sh build_dependencies_script.sh
 
 install: gradle clean build
 
