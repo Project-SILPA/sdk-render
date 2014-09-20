@@ -1,0 +1,13 @@
+Harfuzz
+Link : http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.35.tar.bz2
+Changes done to file : Android.mk
+
+Freetype 
+Link : https://github.com/android/platform_external_freetype/releases/tag/android-4.4.4_r2.0.1
+Changes done to file : Android.mk
+
+Libpng 
+Link : https://github.com/julienr/libpng-android
+Changes done to file : Android.mk
+
+

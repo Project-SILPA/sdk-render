@@ -10,6 +10,7 @@ branches:
   only:
     - master
     - android_develop
+    - org_dependency
 
 jdk: openjdk7
 
@@ -17,8 +18,21 @@ notifications:
   email: false
 
 before_install:
+
+  # use gradle 1.12
+  - sudo rm -r /usr/local/gradle
+  - curl -LO http://services.gradle.org/distributions/gradle-1.12-bin.zip
+  - unzip -q gradle-1.12-bin.zip
+  - sudo mv gradle-1.12 /usr/local/gradle
+
   # for common library
   - git clone https://github.com/SujithVadakkepat/sdk-common.git
+
+  # build android ndk
+  - sh install_android_ndk.sh
+
+  # build dependencies - harfbuzz, freetype, libpng
+  - sh build_dependencies_script.sh
 
 install: gradle clean build
 

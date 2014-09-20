@@ -1,5 +1,10 @@
 /build
 
+# Ignore built harfbuzz, freetype, libpng
+src/main/native/harfbuzz
+src/main/native/freetype
+src/main/native/libpng
+
 # Ignored by AndroidStudio
 *.iws
 *.iml
