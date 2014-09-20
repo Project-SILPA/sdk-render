@@ -6,8 +6,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
-import org.silpa.sdk.common.LanguageDetect;
-
 /**
  * Created by sujith on 24/6/14.
  */
@@ -77,16 +75,10 @@ public class IndicEditText extends EditText {
     protected void onDraw(Canvas canvas) {
 
         int count = getLineCount();
-        String[] textLines = getText().toString().split("\\n");
+        String text = getText().toString();
+        String[] textLines = text.split("\\n");
 
-        if (textLines == null || textLines.length == 0) {
-            super.onDraw(canvas);
-            return;
-        }
-        String word = (textLines[0].trim().split(" "))[0];
-        String lang = LanguageDetect.detectLanguage(word.split(" ")[0]).get(word.split(" ")[0]);
-
-        if (lang == null) {
+        if (text == null || text.length() == 0 || textLines == null || textLines.length == 0) {
             super.onDraw(canvas);
             return;
         }

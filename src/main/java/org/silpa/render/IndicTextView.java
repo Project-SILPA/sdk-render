@@ -6,8 +6,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import org.silpa.sdk.common.LanguageDetect;
-
 /**
  * Created by sujith on 25/6/14.
  */
@@ -77,16 +75,10 @@ public class IndicTextView extends TextView {
     protected void onDraw(Canvas canvas) {
 
         int count = getLineCount();
-        String[] textLines = getText().toString().split("\\n");
+        String text = getText().toString();
+        String[] textLines = text.split("\\n");
 
-        if (textLines == null || textLines.length == 0) {
-            super.onDraw(canvas);
-            return;
-        }
-        String word = (textLines[0].split(" "))[0];
-        String lang = LanguageDetect.detectLanguage(word.split(" ")[0]).get(word.split(" ")[0]);
-
-        if (lang == null || lang.equals("en_US")) {
+        if (text == null || text.length() == 0 || textLines == null || textLines.length == 0) {
             super.onDraw(canvas);
             return;
         }
@@ -95,7 +87,7 @@ public class IndicTextView extends TextView {
         for (int i = 0; i < count; i++) {
             int baseline = getLineBounds(i, r);
             String currentText = i < textLines.length ? textLines[i] : "";
-            
+
             scriptRenderer.setCanvas(canvas);
             scriptRenderer.renderIndicText(currentText, r.left, baseline, (int) getTextSize(),
                     getCurrentTextColor());
