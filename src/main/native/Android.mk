@@ -6,11 +6,11 @@ include $(CLEAR_VARS)
 
 LOCAL_ARM_MODE := arm
 
-LOCAL_MODULE := indic_script_renderer
+LOCAL_MODULE := indic_text_renderer
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/libpng $(LOCAL_PATH)/freetype/include $(LOCAL_PATH)/harfbuzz/src
 
-LOCAL_SRC_FILES := indic-script-renderer.c
+LOCAL_SRC_FILES := indic-text-renderer.c
 
 LOCAL_STATIC_LIBRARIES := ft2 harfbuzz
 

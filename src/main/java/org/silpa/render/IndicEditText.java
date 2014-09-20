@@ -12,11 +12,6 @@ import android.widget.EditText;
 public class IndicEditText extends EditText {
 
     /**
-     * Context of application
-     */
-    private Context mContext;
-
-    /**
      * Rectangle
      */
     private Rect mRect;
@@ -33,7 +28,7 @@ public class IndicEditText extends EditText {
      */
     public IndicEditText(Context context) {
         super(context);
-        init(null, 0);
+        init(context, null, 0);
     }
 
     /**
@@ -44,7 +39,7 @@ public class IndicEditText extends EditText {
      */
     public IndicEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs, 0);
+        init(context, attrs, 0);
     }
 
     /**
@@ -56,19 +51,17 @@ public class IndicEditText extends EditText {
      */
     public IndicEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(attrs, defStyle);
+        init(context, attrs, defStyle);
     }
 
     /**
-     * Initialize data members
-     *
+     * @param context  context of application
      * @param attrs    attribute set
      * @param defStyle default style
      */
-    private void init(AttributeSet attrs, int defStyle) {
-        this.mContext = getContext();
+    private void init(Context context, AttributeSet attrs, int defStyle) {
         this.mRect = new Rect();
-        this.scriptRenderer = new ScriptRenderer(mContext);
+        this.scriptRenderer = new ScriptRenderer(context);
     }
 
     @Override
@@ -78,7 +71,7 @@ public class IndicEditText extends EditText {
         String text = getText().toString();
         String[] textLines = text.split("\\n");
 
-        if (text == null || text.length() == 0 || textLines == null || textLines.length == 0) {
+        if (text == null || text.length() == 0) {
             super.onDraw(canvas);
             return;
         }

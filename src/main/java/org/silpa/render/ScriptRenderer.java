@@ -25,11 +25,11 @@ public class ScriptRenderer {
 
     static {
         System.loadLibrary("png_android");
-        System.loadLibrary("indic_script_renderer");
+        System.loadLibrary("indic_text_renderer");
     }
 
     /**
-     * This is native method defined in indic-script-renderer.c
+     * This is native method defined in indic-text-renderer.c
      *
      * @param unicodeText text to be render
      * @param xStart      start x
@@ -53,7 +53,7 @@ public class ScriptRenderer {
      */
     private Canvas canvas;
 
-    private int xStart, yStart;
+    private int xStart;
 
     /**
      * Font color
@@ -137,7 +137,7 @@ public class ScriptRenderer {
     /**
      * Set canvas for rendering
      *
-     * @param canvas
+     * @param canvas canvas used for rendering image
      */
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
@@ -176,13 +176,12 @@ public class ScriptRenderer {
     protected void renderIndicText(String text, int xStart, int yBaseLine, int fontSize, int fontColor) {
         this.fontColor = fontColor;
         this.xStart = xStart;
-        this.yStart = yBaseLine;
         try {
             List<String[]> lst = preprocessString(text);
             for (int i = lst.size() - 1; i >= 0; i--) {
                 String[] arr = lst.get(i);
                 int language = languageCodes.get(arr[1]);
-                drawIndicText(arr[0], this.xStart, this.yStart, fontSize,
+                drawIndicText(arr[0], this.xStart, yBaseLine, fontSize,
                         true, fontPaths[language], language);
             }
         } catch (Exception e) {
