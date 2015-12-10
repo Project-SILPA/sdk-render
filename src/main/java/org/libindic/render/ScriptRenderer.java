@@ -1,4 +1,4 @@
-package org.silpa.render;
+package org.libindic.render;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 
-import org.silpa.sdk.common.CharacterMap;
+import org.libindic.common.CharacterMap;
 
 import java.io.File;
 import java.io.FileOutputStream;
