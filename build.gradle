@@ -35,25 +35,25 @@ dependencies {
 
 // Uncomment following code while building locally
 //
-task ndkBuild(type: Exec) {
-
-    commandLine "$ndkdir/ndk-build", "--directory", "$projectDir/src/main/native", '-j', Runtime.runtime.availableProcessors(),
-            "APP_PLATFORM=android-8",
-            "APP_BUILD_SCRIPT=$projectDir/src/main/native/Android.mk",
-            "NDK_OUT=$buildDir/native/obj",
-            "NDK_APP_DST_DIR=$buildDir/native/libs/\$(TARGET_ARCH_ABI)"
-}
-
-task nativeLibsToJar(type: Zip, description: 'create a jar with native libs') {
-    destinationDir file("$projectDir/libs")
-    baseName 'native-libs'
-    extension 'jar'
-    from fileTree(dir: "$buildDir/native/libs", include: '**/*.so')
-    into 'lib/'
-}
-
-tasks.withType(JavaCompile) {
-    compileTask -> compileTask.dependsOn nativeLibsToJar
-}
-
-nativeLibsToJar.dependsOn 'ndkBuild'
+//task ndkBuild(type: Exec) {
+//
+//    commandLine "$ndkdir/ndk-build", "--directory", "$projectDir/src/main/native", '-j', Runtime.runtime.availableProcessors(),
+//            "APP_PLATFORM=android-8",
+//            "APP_BUILD_SCRIPT=$projectDir/src/main/native/Android.mk",
+//            "NDK_OUT=$buildDir/native/obj",
+//            "NDK_APP_DST_DIR=$buildDir/native/libs/\$(TARGET_ARCH_ABI)"
+//}
+//
+//task nativeLibsToJar(type: Zip, description: 'create a jar with native libs') {
+//    destinationDir file("$projectDir/libs")
+//    baseName 'native-libs'
+//    extension 'jar'
+//    from fileTree(dir: "$buildDir/native/libs", include: '**/*.so')
+//    into 'lib/'
+//}
+//
+//tasks.withType(JavaCompile) {
+//    compileTask -> compileTask.dependsOn nativeLibsToJar
+//}
+//
+//nativeLibsToJar.dependsOn 'ndkBuild'
